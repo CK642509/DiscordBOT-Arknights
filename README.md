@@ -15,6 +15,16 @@ pip install -r requirements.txt
 ### 2. 啟動機器人
 執行 `main.py`
 
+## 機器人使用方法
+### 說明
+- `exchange` 計算
+- `/result` 取得結果
+- `/clue` 設定線索
+- `/clues` 顯示當前線索
+- `/users` 顯示玩家清單
+- `/help` 顯示說明
+
+
 ## 筆記
 ### 用 python 呼叫 .exe 檔
 - 使用 `subprocess` 可以做到
