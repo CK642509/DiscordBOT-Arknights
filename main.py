@@ -2,7 +2,7 @@ import discord
 import json
 from discord import app_commands
 
-from utils import exchange, getResult
+from utils import exchange, getResult, getUsers, setClues, getClues, getHelp
 
 
 with open('items.json', "r", encoding = "utf8") as file:
@@ -29,9 +29,9 @@ async def on_message(message):
     if message.content == 'exchange':
         exchange()
         await message.channel.send('計算完成')
-    if message.content == 'test':
-        result = getResult()
-        await message.channel.send(result)
+    # if message.content == 'test':
+    #     setClues("111", "222")
+    #     await message.channel.send('123')
 
 @tree.command(
     name = "exchange",
@@ -48,21 +48,41 @@ async def first_command(interaction, arg: str):
     description = "各功能說明",
     guild=discord.Object(id=1063079372568924250)
 )
-async def first_command(interaction, arg: str):
-    await interaction.response.send_message("TODO")
+async def first_command(interaction):
+    await interaction.response.send_message(getHelp())
 
+
+@tree.command(
+    name = "clue",
+    description = "設定線索, 格式: 玩家名稱, 線索",
+    guild=discord.Object(id=1063079372568924250)
+)
+async def first_command(interaction, clue: str):
+    setClues(clue)
+    clues = getClues()
+    await interaction.response.send_message(clues)
 
 @tree.command(
     name = "clues",
-    description = "各功能說明",
+    description = "顯示目前的線索清單",
     guild=discord.Object(id=1063079372568924250)
 )
-async def first_command(interaction, arg: str):
-    await interaction.response.send_message("TODO")
+async def first_command(interaction):
+    clues = getClues()
+    await interaction.response.send_message(clues)
+
+@tree.command(
+    name = "users",
+    description = "顯示玩家清單",
+    guild=discord.Object(id=1063079372568924250)
+)
+async def first_command(interaction):
+    users = getUsers()
+    await interaction.response.send_message(users)
 
 @tree.command(
     name = "result",
-    description = "回傳計算結果",
+    description = "顯示計算結果",
     guild=discord.Object(id=1063079372568924250)
 )
 async def first_command(interaction):
