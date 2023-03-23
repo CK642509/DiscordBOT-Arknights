@@ -14,3 +14,13 @@ pip install -r requirements.txt
 
 ### 2. 啟動機器人
 執行 `main.py`
+
+## 筆記
+### 用 python 呼叫 .exe 檔
+- 使用 `subprocess` 可以做到
+- 交換線索的檔案們(包含 `.exe` 和 `.txt`)必須放在和 `main.py` 同一資料夾
+- 原因是這支程式在讀取和寫入檔案時，所使用的路徑是「工作資料夾」，移到其他路徑會因為找不到檔案而出事
+
+### timeout 
+- 若把執行 exe 放在 slash command 中，會因為 timeout 而出錯
+- 目前只能把執行 exe 的功能，由一般對話進行觸發
