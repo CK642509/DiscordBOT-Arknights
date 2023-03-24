@@ -21,9 +21,10 @@ def setClues(clues):
     text = getClues()
     clue_list = text.split("\n")[:8]
 
-    # get user list
+    # get user list (lowercase)
     user_list = getUsers().split("\n")
-    idx = user_list.index(clues.split(",")[0])
+    user_list = list(map(lambda x: x.lower(), user_list))
+    idx = user_list.index(clues.split(",")[0].lower())
 
     # set new clues
     clue_list[idx] = clues.split(",")[1].strip()
