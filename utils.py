@@ -40,11 +40,12 @@ def getHelp():
     - 使用 `/clue` 設定線索
     - 一次只能設定一個玩家
     - 後面的參數格式為: 玩家名稱, 線索
-    - 參數範例: JABO, 1123 56
+    - 參數範例: JABO, 112356 56
     - 成功後會回傳當前所有線索
 2. 計算
     - 使用 `exchange` (注意: 沒有斜線)
     - 等待其回傳「計算完畢」
 3. 取得計算結果
     - 使用 `/result` 取得結果
+Github: https://github.com/CK642509/DiscordBOT-Arknights
 """
