@@ -24,7 +24,9 @@ def setClues(clues):
     # get user list (lowercase)
     user_list = getUsers().split("\n")
     user_list = list(map(lambda x: x.lower(), user_list))
-    idx = user_list.index(clues.split(",")[0].lower())
+
+    # get the row number that needs to be updated
+    idx = user_list.index(clues.split(",")[0].strip().lower())
 
     # set new clues
     clue_list[idx] = clues.split(",")[1].strip()
