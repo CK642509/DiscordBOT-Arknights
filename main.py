@@ -9,6 +9,9 @@ with open('items.json', "r", encoding = "utf8") as file:
     data = json.load(file)
 print(data["token"])
 
+# GUILD_ID=728226989613383711
+GUILD_ID=1063079372568924250
+
 #client 是我們與 Discord 連結的橋樑，intents 是我們要求的權限
 intents = discord.Intents.default()
 intents.message_content = True
@@ -17,7 +20,7 @@ tree = app_commands.CommandTree(client)
 
 @client.event
 async def on_ready():
-    await tree.sync(guild=discord.Object(id=1063079372568924250))
+    await tree.sync(guild=discord.Object(id=GUILD_ID))
     print('目前登入身份：', client.user)
 
 @client.event
@@ -36,7 +39,7 @@ async def on_message(message):
 @tree.command(
     name = "exchange",
     description = "輸入線索",
-    guild=discord.Object(id=1063079372568924250)
+    guild=discord.Object(id=GUILD_ID)
 )
 async def first_command(interaction, arg: str):
     exchange()
@@ -46,7 +49,7 @@ async def first_command(interaction, arg: str):
 @tree.command(
     name = "help",
     description = "各功能說明",
-    guild=discord.Object(id=1063079372568924250)
+    guild=discord.Object(id=GUILD_ID)
 )
 async def first_command(interaction):
     await interaction.response.send_message(getHelp())
@@ -55,7 +58,7 @@ async def first_command(interaction):
 @tree.command(
     name = "clue",
     description = "設定線索, 格式: 玩家名稱, 線索",
-    guild=discord.Object(id=1063079372568924250)
+    guild=discord.Object(id=GUILD_ID)
 )
 async def first_command(interaction, clue: str):
     setClues(clue)
@@ -65,7 +68,7 @@ async def first_command(interaction, clue: str):
 @tree.command(
     name = "clues",
     description = "顯示目前的線索清單",
-    guild=discord.Object(id=1063079372568924250)
+    guild=discord.Object(id=GUILD_ID)
 )
 async def first_command(interaction):
     clues = getClues()
@@ -74,7 +77,7 @@ async def first_command(interaction):
 @tree.command(
     name = "users",
     description = "顯示玩家清單",
-    guild=discord.Object(id=1063079372568924250)
+    guild=discord.Object(id=GUILD_ID)
 )
 async def first_command(interaction):
     users = getUsers()
@@ -83,7 +86,7 @@ async def first_command(interaction):
 @tree.command(
     name = "result",
     description = "顯示計算結果",
-    guild=discord.Object(id=1063079372568924250)
+    guild=discord.Object(id=GUILD_ID)
 )
 async def first_command(interaction):
     result = getResult()
