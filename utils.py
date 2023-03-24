@@ -1,4 +1,5 @@
 import subprocess
+# import re
 
 def exchange():
     subprocess.run("./START.exe")
@@ -29,7 +30,11 @@ def setClues(clues):
     idx = user_list.index(clues.split(",")[0].strip().lower())
 
     # set new clues
-    clue_list[idx] = clues.split(",")[1].strip()
+    new_clue = clues.split(",")[1].strip()
+    # TODO: re
+    # print(re.match("", new_clue))
+
+    clue_list[idx] = new_clue
     new_clues = "\n".join(clue_list)
 
     with open("input.txt", "w") as f:
