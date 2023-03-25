@@ -9,8 +9,9 @@ with open('items.json', "r", encoding = "utf8") as file:
     data = json.load(file)
 print(data["token"])
 
-# GUILD_ID=728226989613383711
-GUILD_ID=1063079372568924250
+GUILD_ID=728226989613383711
+# GUILD_ID=1063079372568924250
+CLUE_CHANNEL_ID=729940609330053151
 
 #client 是我們與 Discord 連結的橋樑，intents 是我們要求的權限
 intents = discord.Intents.default()
@@ -27,6 +28,11 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
+    else:
+        print(message.author.id, message.author.name, message.content)
+        print(message.channel.id)
+        # print(message.guild.id)
+    
     if message.content == 'ping':
         await message.channel.send('pong')
     if message.content == 'exchange':
@@ -36,14 +42,14 @@ async def on_message(message):
     #     setClues("111", "222")
     #     await message.channel.send('123')
 
-@tree.command(
-    name = "exchange",
-    description = "輸入線索",
-    guild=discord.Object(id=GUILD_ID)
-)
-async def first_command(interaction, arg: str):
-    exchange()
-    await interaction.response.send_message(f"計算完成")
+# @tree.command(
+#     name = "exchange",
+#     description = "輸入線索",
+#     guild=discord.Object(id=GUILD_ID)
+# )
+# async def first_command(interaction, arg: str):
+#     exchange()
+#     await interaction.response.send_message(f"計算完成")
 
 
 @tree.command(
