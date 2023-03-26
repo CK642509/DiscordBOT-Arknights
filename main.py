@@ -2,16 +2,18 @@ import discord
 import json
 from discord import app_commands
 
-from utils import exchange, getResult, getUsers, setClues, getClues, getHelp
+from utils import exchange, getResult, getUsers, setClues, getClues, getHelp, formatClues
 
 
 with open('items.json', "r", encoding = "utf8") as file:
     data = json.load(file)
 print(data["token"])
 
-GUILD_ID=728226989613383711
 # GUILD_ID=1063079372568924250
-CLUE_CHANNEL_ID=729940609330053151
+GUILD_ID = 728226989613383711
+CLUE_CHANNEL_ID = 729940609330053151
+CHAT_CHANNEL_ID = 728226989613383714
+TEST_CHANNEL_ID = 1088844315314360320
 
 #client 是我們與 Discord 連結的橋樑，intents 是我們要求的權限
 intents = discord.Intents.default()
@@ -32,15 +34,26 @@ async def on_message(message):
         print(message.author.id, message.author.name, message.content)
         print(message.channel.id)
         # print(message.guild.id)
+        user = data[str(message.author.id)]
+        print(user)
     
     if message.content == 'ping':
         await message.channel.send('pong')
     if message.content == 'exchange':
         exchange()
         await message.channel.send('計算完成')
-    # if message.content == 'test':
-    #     setClues("111", "222")
-    #     await message.channel.send('123')
+    if message.content == 'test':
+        print(formatClues("1112345 123"))
+        print(formatClues("1112345"))
+        print(formatClues("1112345   1"))
+        await client.get_channel(TEST_CHANNEL_ID).send("XD")
+    # 更新線索
+    if message.channel.id == CLUE_CHANNEL_ID and message.author.id != 525463925194489876:
+        user = data[str(message.author.id)]
+        clues = formatClues(message.content)
+        setClues(f"{user}, {clues}")
+        clues = getClues()
+        await client.get_channel(TEST_CHANNEL_ID).send(clues)
 
 # @tree.command(
 #     name = "exchange",
@@ -96,7 +109,8 @@ async def first_command(interaction):
 )
 async def first_command(interaction):
     result = getResult()
-    await interaction.response.send_message(result)
+    # await interaction.response.send_message(result)
+    await client.get_channel(CLUE_CHANNEL_ID).send(result)
 
 
 client.run(data['token'])

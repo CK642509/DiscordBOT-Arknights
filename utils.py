@@ -1,5 +1,5 @@
 import subprocess
-# import re
+import re
 
 def exchange():
     subprocess.run("./START.exe")
@@ -17,7 +17,7 @@ def getClues():
     with open("input.txt", "r") as f:
         return f.read()
 
-def setClues(clues):
+def setClues(clues: str):
     # get previous clues
     text = getClues()
     clue_list = text.split("\n")[:8]
@@ -56,3 +56,21 @@ def getHelp():
     - 使用 `/result` 取得結果
 Github: https://github.com/CK642509/DiscordBOT-Arknights
 """
+
+def formatClues(text:str):
+    text = text.strip()
+
+    # check if only contains 0-7
+    if not re.match("/[^0-7]/", text):
+        print("only 0-7")
+    else:
+        return ""
+    
+    if len(text.split(" ")) == 1:
+        return f"{text} 0"
+    elif len(text.split(" ")) == 2:
+        return text
+    else:
+        return ""
+
+
