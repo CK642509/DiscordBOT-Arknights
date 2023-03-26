@@ -14,6 +14,9 @@ pip install -r requirements.txt
 
 ### 2. 啟動機器人
 執行 `main.py`
+```
+python main.py
+```
 
 ## 機器人使用方法
 ### 說明
