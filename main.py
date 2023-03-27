@@ -28,7 +28,10 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    if message.author == client.user:
+    if message.author == client.user and message.content == '計算完成':
+        result = getResult()
+        await client.get_channel(CLUE_CHANNEL_ID).send(result)
+    elif message.author == client.user:
         return
     else:
         print(message.author.id, message.author.name, message.content)
