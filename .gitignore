@@ -4,3 +4,4 @@ __pycache__
 Results.txt
 Input.txt
 _Error Log.txt
+.env
