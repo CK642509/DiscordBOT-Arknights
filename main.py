@@ -57,6 +57,19 @@ async def on_message(message):
         setClues(f"{user}, {clues}")
         clues = getClues()
         await client.get_channel(TEST_CHANNEL_ID).send(clues)
+    # 更新線索 (小蔡)
+    if message.channel.id == CLUE_CHANNEL_ID and message.author.id == 525463925194489876:
+        # TODO: 整理成函數
+        clue_1 = message.content.split("\n")[0]
+        clue_2 = message.content.split("\n")[1]
+        user_1 = clue_1.split(":")[0]
+        user_2 = clue_2.split(":")[0]
+        clues_1 = formatClues(clue_1.split(":")[1])
+        clues_2 = formatClues(clue_2.split(":")[1])
+        setClues(f"{user_1}, {clues_1}")
+        setClues(f"{user_2}, {clues_2}")
+        clues = getClues()
+        await client.get_channel(TEST_CHANNEL_ID).send(clues)
 
 # @tree.command(
 #     name = "exchange",
