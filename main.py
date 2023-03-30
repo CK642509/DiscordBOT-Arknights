@@ -37,8 +37,11 @@ async def on_message(message):
         print(message.author.id, message.author.name, message.content)
         print(message.channel.id)
         # print(message.guild.id)
-        user = data[str(message.author.id)]
-        print(user)
+        try:
+            user = data[str(message.author.id)]
+            print(user)
+        except:
+            print("not exist in user list")
     
     if message.content == 'ping':
         await message.channel.send('pong')
