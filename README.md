@@ -54,3 +54,4 @@ python main.py
 - [ ] 部屬的替代方案：
   - [ ] 將原始碼 (C++) 編譯成 linux 可執行的執行檔
   - [ ] 找一個可以部屬 docker 的平台
+        > 說不定 pywine 這個 docker image 可以
