@@ -2,7 +2,7 @@ import discord
 import json
 from discord import app_commands
 
-from utils import exchange, getResult, getUsers, setClues, getClues, getHelp, formatClues
+from utils import exchange, getResult, getUsers, setClues, getClues, getDetail, getHelp, formatClues
 
 
 with open('config.json', "r", encoding = "utf8") as file:
@@ -59,8 +59,10 @@ async def on_message(message):
         user = config["users"][str(message.author.id)]
         clues = formatClues(message.content)
         setClues(f"{user}, {clues}")
-        clues = getClues()
-        await client.get_channel(TEST_CHANNEL_ID).send(clues)
+        # clues = getClues()
+        # await client.get_channel(TEST_CHANNEL_ID).send(clues)
+        detail = getDetail()
+        await client.get_channel(TEST_CHANNEL_ID).send(detail)
     # 更新線索 (小蔡)
     if message.channel.id == CLUE_CHANNEL_ID and message.author.id == 525463925194489876:
         # TODO: 整理成函數
