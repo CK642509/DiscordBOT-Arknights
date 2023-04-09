@@ -66,10 +66,11 @@ def formatClues(text:str):
     else:
         return ""
     
-    if len(text.split(" ")) == 1:
+    result = re.split("\s+", text)
+    if len(result) == 1:
         return f"{text} 0"
-    elif len(text.split(" ")) == 2:
-        return text
+    elif len(result) == 2:
+        return f"{result[0]} {result[1]}"
     else:
         return ""
 
