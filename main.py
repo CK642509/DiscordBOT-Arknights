@@ -5,15 +5,16 @@ from discord import app_commands
 from utils import exchange, getResult, getUsers, setClues, getClues, getHelp, formatClues
 
 
-with open('items.json', "r", encoding = "utf8") as file:
-    data = json.load(file)
-print(data["token"])
+with open('config.json', "r", encoding = "utf8") as file:
+    config = json.load(file)
+print(config["token"])
+print(config["GUILD_ID"])
 
 # GUILD_ID=1063079372568924250
-GUILD_ID = 728226989613383711
-CLUE_CHANNEL_ID = 729940609330053151
-CHAT_CHANNEL_ID = 728226989613383714
-TEST_CHANNEL_ID = 1088844315314360320
+GUILD_ID = config["GUILD_ID"]
+CLUE_CHANNEL_ID = config["CLUE_CHANNEL_ID"]
+CHAT_CHANNEL_ID = config["CHAT_CHANNEL_ID"]
+TEST_CHANNEL_ID = config["TEST_CHANNEL_ID"]
 
 #client 是我們與 Discord 連結的橋樑，intents 是我們要求的權限
 intents = discord.Intents.default()
@@ -38,7 +39,7 @@ async def on_message(message):
         print(message.channel.id)
         # print(message.guild.id)
         try:
-            user = data[str(message.author.id)]
+            user = config["users"][str(message.author.id)]
             print(user)
         except:
             print("not exist in user list")
@@ -55,7 +56,7 @@ async def on_message(message):
         await client.get_channel(TEST_CHANNEL_ID).send("XD")
     # 更新線索
     if message.channel.id == CLUE_CHANNEL_ID and message.author.id != 525463925194489876:
-        user = data[str(message.author.id)]
+        user = config["users"][str(message.author.id)]
         clues = formatClues(message.content)
         setClues(f"{user}, {clues}")
         clues = getClues()
@@ -132,4 +133,4 @@ async def first_command(interaction):
     await client.get_channel(CLUE_CHANNEL_ID).send(result)
 
 
-client.run(data['token'])
+client.run(config['token'])
