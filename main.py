@@ -62,7 +62,7 @@ async def on_message(message):
         # clues = getClues()
         # await client.get_channel(TEST_CHANNEL_ID).send(clues)
         detail = getDetail()
-        await client.get_channel(TEST_CHANNEL_ID).send(detail)
+        await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
     # 更新線索 (小蔡)
     if message.channel.id == CLUE_CHANNEL_ID and message.author.id == 525463925194489876:
         # TODO: 整理成函數
@@ -74,8 +74,10 @@ async def on_message(message):
         clues_2 = formatClues(clue_2.split(":")[1])
         setClues(f"{user_1}, {clues_1}")
         setClues(f"{user_2}, {clues_2}")
-        clues = getClues()
-        await client.get_channel(TEST_CHANNEL_ID).send(clues)
+        # clues = getClues()
+        # await client.get_channel(TEST_CHANNEL_ID).send(clues)
+        detail = getDetail()
+        await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
 
 # @tree.command(
 #     name = "exchange",
