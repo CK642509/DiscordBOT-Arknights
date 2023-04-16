@@ -103,8 +103,10 @@ async def first_command(interaction):
     description = "設定線索, 格式: 玩家名稱, 線索",
     guild=discord.Object(id=GUILD_ID)
 )
-async def first_command(interaction, clue: str):
-    setClues(clue)
+async def first_command(interaction, text: str):
+    user = text.split(",")[0]
+    clue = text.split(",")[1]
+    setClues(f"{user}, {formatClues(clue)}")
     clues = getClues()
     await interaction.response.send_message(clues)
 
