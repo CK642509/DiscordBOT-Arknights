@@ -1,6 +1,7 @@
 import discord
 import json
 from discord import app_commands
+from datetime import date, timedelta
 
 from utils import exchange, getResult, getUsers, setClues, getClues, getDetail, getHelp, formatClues
 
@@ -49,33 +50,42 @@ async def on_message(message):
     if message.content == 'exchange':
         exchange()
         await message.channel.send('計算完成')
-    if message.content == 'test':
-        print(formatClues("1112345 123"))
-        print(formatClues("1112345"))
-        print(formatClues("1112345   1"))
-        await client.get_channel(TEST_CHANNEL_ID).send("XD")
+    if message.content == 'update':
+        limit = 10
+        channel = client.get_channel(CLUE_CHANNEL_ID)
+        messages = [message async for message in channel.history(limit=limit)]
+        for i in range(limit):
+            if date.today() == (messages[i].created_at + timedelta(hours=8)).date():   # UTC+8
+                if messages[i].author.id == 525463925194489876:   # 更新線索 (小蔡)
+                    for j in range(2):
+                        clue = messages[i].content.split("\n")[j]
+                        user = clue.split(":")[0]
+                        clues = formatClues(clue.split(":")[1])
+                        setClues(f"{user}, {clues}")
+                    # detail = getDetail()
+                    # await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
+                elif messages[i].author.id != 1087755638886645882:   # BOT ID
+                    user = config["users"][str(messages[i].author.id)]
+                    clues = formatClues(messages[i].content)
+                    setClues(f"{user}, {clues}")
+                    # detail = getDetail()
+                    # await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
+        detail = getDetail()
+        await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```用歷史訊息更新線索完成")
     # 更新線索
     if message.channel.id == CLUE_CHANNEL_ID and message.author.id != 525463925194489876:
         user = config["users"][str(message.author.id)]
         clues = formatClues(message.content)
         setClues(f"{user}, {clues}")
-        # clues = getClues()
-        # await client.get_channel(TEST_CHANNEL_ID).send(clues)
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
     # 更新線索 (小蔡)
     if message.channel.id == CLUE_CHANNEL_ID and message.author.id == 525463925194489876:
-        # TODO: 整理成函數
-        clue_1 = message.content.split("\n")[0]
-        clue_2 = message.content.split("\n")[1]
-        user_1 = clue_1.split(":")[0]
-        user_2 = clue_2.split(":")[0]
-        clues_1 = formatClues(clue_1.split(":")[1])
-        clues_2 = formatClues(clue_2.split(":")[1])
-        setClues(f"{user_1}, {clues_1}")
-        setClues(f"{user_2}, {clues_2}")
-        # clues = getClues()
-        # await client.get_channel(TEST_CHANNEL_ID).send(clues)
+        for i in range(2):
+            clue = message.content.split("\n")[i]
+            user = clue.split(":")[0]
+            clues = formatClues(clue.split(":")[1])
+            setClues(f"{user}, {clues}")
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
 
