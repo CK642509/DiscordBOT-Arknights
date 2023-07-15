@@ -57,19 +57,19 @@ async def on_message(message):
         for i in range(limit):
             if date.today() == (messages[i].created_at + timedelta(hours=8)).date():   # UTC+8
                 if messages[i].author.id == 525463925194489876:   # 更新線索 (小蔡)
-                    for j in range(2):
-                        clue = messages[i].content.split("\n")[j]
-                        user = clue.split(":")[0]
-                        clues = formatClues(clue.split(":")[1])
-                        setClues(f"{user}, {clues}")
-                    # detail = getDetail()
-                    # await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
+                    try:
+                        for j in range(2):
+                            clue = messages[i].content.split("\n")[j]
+                            user = clue.split(":")[0]
+                            clues = formatClues(clue.split(":")[1])
+                            setClues(f"{user}, {clues}")
+                    except IndexError as e:
+                        print(e)
                 elif messages[i].author.id != 1087755638886645882:   # BOT ID
                     user = config["users"][str(messages[i].author.id)]
                     clues = formatClues(messages[i].content)
                     setClues(f"{user}, {clues}")
-                    # detail = getDetail()
-                    # await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
+
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```用歷史訊息更新線索完成")
     # 更新線索
@@ -81,11 +81,15 @@ async def on_message(message):
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
     # 更新線索 (小蔡)
     if message.channel.id == CLUE_CHANNEL_ID and message.author.id == 525463925194489876:
-        for i in range(2):
-            clue = message.content.split("\n")[i]
-            user = clue.split(":")[0]
-            clues = formatClues(clue.split(":")[1])
-            setClues(f"{user}, {clues}")
+        try:
+            for i in range(2):
+                clue = message.content.split("\n")[i]
+                user = clue.split(":")[0]
+                clues = formatClues(clue.split(":")[1])
+                setClues(f"{user}, {clues}")
+        except IndexError as e:
+            print(e)
+
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
 
