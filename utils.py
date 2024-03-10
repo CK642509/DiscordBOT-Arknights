@@ -2,25 +2,31 @@ import subprocess
 import re
 from datetime import date
 
+
 def exchange():
     subprocess.run("./START.exe")
+
 
 def getResult():
     with open("Results.txt", "r") as f:
         return f.read()
+
 
 def getUsers():
     with open("_User data.txt", "r") as f:
         text = f.read()
         return "\n".join(text.split("\n")[2:])
 
+
 def getClues():
     with open("input.txt", "r") as f:
         return f.read()
 
+
 def getDetail():
     with open("detail.txt", "r") as f:
         return f.read()
+
 
 def setClues(clues: str):
     # get previous clues
@@ -47,12 +53,13 @@ def setClues(clues: str):
 
     # record details
     detail = getDetail()
-    
+
     with open("detail.txt", "w") as f:
         detail_list = detail.split("\n")
         detail_list[idx] = f"{date.today()} {user_list[idx]:<7} {new_clue}"
         new_detail = "\n".join(detail_list)
         f.write(new_detail)
+
 
 def getHelp():
     return """
@@ -71,7 +78,8 @@ def getHelp():
 Github: https://github.com/CK642509/DiscordBOT-Arknights
 """
 
-def formatClues(text:str):
+
+def formatClues(text: str):
     text = text.strip()
 
     # check if only contains 0-7
@@ -79,7 +87,7 @@ def formatClues(text:str):
         print("only 0-7")
     else:
         return ""
-    
+
     result = re.split("\s+", text)
     if len(result) == 1:
         return f"{text} 0"
@@ -87,5 +95,3 @@ def formatClues(text:str):
         return f"{result[0]} {result[1]}"
     else:
         return ""
-
-
