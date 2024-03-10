@@ -5,3 +5,4 @@ Results.txt
 Input.txt
 _Error Log.txt
 .env
+utils/*
