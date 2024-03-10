@@ -1,6 +1,6 @@
 import discord
 import json
-from discord import app_commands
+from discord import app_commands, Message, Interaction
 from datetime import date, timedelta
 
 from utils import (
@@ -40,7 +40,7 @@ async def on_ready():
 
 
 @client.event
-async def on_message(message):
+async def on_message(message: Message):
     if message.author == client.user and message.content == "計算完成":
         result = getResult()
         await client.get_channel(CLUE_CHANNEL_ID).send(result)
@@ -126,7 +126,7 @@ async def on_message(message):
 
 
 @tree.command(name="help", description="各功能說明", guild=discord.Object(id=GUILD_ID))
-async def first_command(interaction):
+async def first_command(interaction: Interaction):
     await interaction.response.send_message(getHelp())
 
 
@@ -135,7 +135,7 @@ async def first_command(interaction):
     description="設定線索, 格式: 玩家名稱, 線索",
     guild=discord.Object(id=GUILD_ID),
 )
-async def first_command(interaction, text: str):
+async def first_command(interaction: Interaction, text: str):
     user = text.split(",")[0]
     clue = text.split(",")[1]
     setClues(f"{user}, {formatClues(clue)}")
@@ -146,7 +146,7 @@ async def first_command(interaction, text: str):
 @tree.command(
     name="clues", description="顯示目前的線索清單", guild=discord.Object(id=GUILD_ID)
 )
-async def first_command(interaction):
+async def first_command(interaction: Interaction):
     clues = getClues()
     await interaction.response.send_message(clues)
 
@@ -154,7 +154,7 @@ async def first_command(interaction):
 @tree.command(
     name="users", description="顯示玩家清單", guild=discord.Object(id=GUILD_ID)
 )
-async def first_command(interaction):
+async def first_command(interaction: Interaction):
     users = getUsers()
     await interaction.response.send_message(users)
 
@@ -162,7 +162,7 @@ async def first_command(interaction):
 @tree.command(
     name="result", description="顯示計算結果", guild=discord.Object(id=GUILD_ID)
 )
-async def first_command(interaction):
+async def first_command(interaction: Interaction):
     result = getResult()
     # await interaction.response.send_message(result)
     await client.get_channel(CLUE_CHANNEL_ID).send(result)
