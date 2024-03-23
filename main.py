@@ -131,8 +131,7 @@ async def first_command(interaction: Interaction):
     guild=discord.Object(id=GUILD_ID),
 )
 async def first_command(interaction: Interaction, text: str):
-    user = text.split(",")[0]
-    clue = text.split(",")[1]
+    user, clue = text.split(",", 1)
     setClues(f"{user}, {formatClues(clue)}")
     clues = getClues()
     await interaction.response.send_message(clues)
