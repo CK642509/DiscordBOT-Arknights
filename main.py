@@ -65,28 +65,30 @@ async def on_message(message: Message):
         limit = 10
         channel = client.get_channel(CLUE_CHANNEL_ID)
         messages = [message async for message in channel.history(limit=limit)]
-        for i in range(limit):
-            if (
-                date.today() == (messages[i].created_at + timedelta(hours=8)).date()
-            ):  # UTC+8
-                if messages[i].author.id == 525463925194489876:  # 更新線索 (小蔡)
+
+        for i, message in enumerate(messages):
+            message_date = (message.created_at + timedelta(hours=8)).date()
+            if date.today() == message_date:
+                author_id = message.author.id
+                if author_id == 525463925194489876:  # 更新線索 (小蔡)
                     try:
                         for j in range(2):
-                            clue = messages[i].content.split("\n")[j]
-                            user = clue.split(":")[0]
-                            clues = formatClues(clue.split(":")[1])
+                            clue = message.content.split("\n")[j]
+                            user, clues = clue.split(":")
+                            clues = formatClues(clues)
                             setClues(f"{user}, {clues}")
                     except IndexError as e:
                         print(e)
-                elif messages[i].author.id != 1087755638886645882:  # BOT ID
-                    user = config["users"][str(messages[i].author.id)]
-                    clues = formatClues(messages[i].content)
+                elif author_id != 1087755638886645882:  # BOT ID
+                    user = config["users"][str(author_id)]
+                    clues = formatClues(message.content)
                     setClues(f"{user}, {clues}")
 
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(
             f"```{detail}```用歷史訊息更新線索完成"
         )
+
     # 更新線索
     if (
         message.channel.id == CLUE_CHANNEL_ID
@@ -97,6 +99,7 @@ async def on_message(message: Message):
         setClues(f"{user}, {clues}")
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
+
     # 更新線索 (小蔡)
     if (
         message.channel.id == CLUE_CHANNEL_ID
