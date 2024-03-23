@@ -90,29 +90,21 @@ async def on_message(message: Message):
         )
 
     # 更新線索
-    if (
-        message.channel.id == CLUE_CHANNEL_ID
-        and message.author.id != 525463925194489876
-    ):
-        user = config["users"][str(message.author.id)]
-        clues = formatClues(message.content)
-        setClues(f"{user}, {clues}")
-        detail = getDetail()
-        await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
-
-    # 更新線索 (小蔡)
-    if (
-        message.channel.id == CLUE_CHANNEL_ID
-        and message.author.id == 525463925194489876
-    ):
-        try:
-            for i in range(2):
-                clue = message.content.split("\n")[i]
-                user = clue.split(":")[0]
-                clues = formatClues(clue.split(":")[1])
-                setClues(f"{user}, {clues}")
-        except IndexError as e:
-            print(e)
+    if message.channel.id == CLUE_CHANNEL_ID:
+        author_id = message.author.id
+        if author_id == 525463925194489876:  # 更新線索 (小蔡)
+            try:
+                for i in range(2):
+                    clue = message.content.split("\n")[i]
+                    user, clue_content = clue.split(":")
+                    clues = formatClues(clue_content)
+                    setClues(f"{user}, {clues}")
+            except IndexError as e:
+                print(e)
+        else:
+            user = config["users"][str(author_id)]
+            clues = formatClues(message.content)
+            setClues(f"{user}, {clues}")
 
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
