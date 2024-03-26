@@ -58,10 +58,10 @@ async def on_message(message: Message):
 
     if message.content == "ping":
         await message.channel.send("pong")
-    if message.content == "exchange":
+    elif message.content == "exchange":
         exchange()
         await message.channel.send("計算完成")
-    if message.content == "update":
+    elif message.content == "update":
         limit = 10
         channel = client.get_channel(CLUE_CHANNEL_ID)
         messages = [message async for message in channel.history(limit=limit)]
@@ -90,7 +90,7 @@ async def on_message(message: Message):
         )
 
     # 更新線索
-    if message.channel.id == CLUE_CHANNEL_ID:
+    elif message.channel.id == CLUE_CHANNEL_ID:
         author_id = message.author.id
         if author_id == 525463925194489876:  # 更新線索 (小蔡)
             try:
