@@ -1,10 +1,14 @@
 import subprocess
 import re
 from datetime import date
+from sys import platform
 
 
 def exchange():
-    subprocess.run("./START.exe")
+    if platform == "linux" or platform == "linux2":
+        subprocess.run("./start")
+    elif platform == "win32":
+        subprocess.run("./START.exe")
 
 
 def getResult():
