@@ -44,20 +44,20 @@ async def on_ready():
 
 @client.event
 async def on_message(message: Message):
-    if message.author == client.user and message.content == "計算完成":
-        result = getResult()
-        await client.get_channel(CLUE_CHANNEL_ID).send(result)
-    elif message.author == client.user:
+    if message.author == client.user:
+        if message.content == "計算完成":
+            result = getResult()
+            await client.get_channel(CLUE_CHANNEL_ID).send(result)
         return
-    else:
-        print(message.author.id, message.author.name, message.content)
-        print(message.channel.id)
-        # print(message.guild.id)
-        try:
-            user = config["users"][str(message.author.id)]
-            print(user)
-        except:
-            print("not exist in user list")
+
+    print(message.author.id, message.author.name, message.content)
+    print(message.channel.id)
+    # print(message.guild.id)
+    try:
+        user = config["users"][str(message.author.id)]
+        print(user)
+    except:
+        print("not exist in user list")
 
     if message.content == "ping":
         await message.channel.send("pong")
