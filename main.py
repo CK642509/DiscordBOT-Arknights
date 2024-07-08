@@ -71,17 +71,17 @@ async def on_message(message: Message):
     elif message.content == "update":
         channel = client.get_channel(CLUE_CHANNEL_ID)
         messages = [
-            message async for message in channel.history(limit=CHANNEL_HISTORY_LIMIT)
+            msg async for msg in channel.history(limit=CHANNEL_HISTORY_LIMIT)
         ]
 
-        for i, message in enumerate(messages):
-            message_date = (message.created_at + timedelta(hours=8)).date()
+        for msg in messages:
+            message_date = (msg.created_at + timedelta(hours=8)).date()
             if date.today() == message_date:
-                author_id = message.author.id
+                author_id = msg.author.id
                 if author_id == 525463925194489876:  # 更新線索 (小蔡)
                     try:
                         for j in range(2):
-                            clue = message.content.split("\n")[j]
+                            clue = msg.content.split("\n")[j]
                             user, clues = clue.split(":")
                             clues = formatClues(clues)
                             setClues(f"{user}, {clues}")
@@ -89,9 +89,10 @@ async def on_message(message: Message):
                         print(e)
                 elif author_id != BOT_ID:
                     user = config["users"][str(author_id)]
-                    clues = formatClues(message.content)
+                    clues = formatClues(msg.content)
                     setClues(f"{user}, {clues}")
 
+        # return updated clues
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(
             f"```{detail}```用歷史訊息更新線索完成"
