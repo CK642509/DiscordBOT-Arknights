@@ -17,7 +17,7 @@ from utils import (
 
 # Load configuration
 def load_config():
-with open("config.json", "r", encoding="utf8") as file:
+    with open("config.json", "r", encoding="utf8") as file:
         return json.load(file)
 
 config = load_config()
