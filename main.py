@@ -124,7 +124,7 @@ async def on_message(message: Message):
 
 
 @tree.command(name="help", description="各功能說明", guild=discord.Object(id=GUILD_ID))
-async def first_command(interaction: Interaction):
+async def show_help(interaction: Interaction):
     await interaction.response.send_message(getHelp())
 
 
@@ -133,7 +133,7 @@ async def first_command(interaction: Interaction):
     description="設定線索, 格式: 玩家名稱, 線索",
     guild=discord.Object(id=GUILD_ID),
 )
-async def first_command(interaction: Interaction, text: str):
+async def set_user_clues(interaction: Interaction, text: str):
     user, clue = text.split(",", 1)
     setClues(f"{user}, {formatClues(clue)}")
     clues = getClues()
@@ -143,7 +143,7 @@ async def first_command(interaction: Interaction, text: str):
 @tree.command(
     name="clues", description="顯示目前的線索清單", guild=discord.Object(id=GUILD_ID)
 )
-async def first_command(interaction: Interaction):
+async def get_user_clues(interaction: Interaction):
     clues = getClues()
     await interaction.response.send_message(clues)
 
@@ -151,7 +151,7 @@ async def first_command(interaction: Interaction):
 @tree.command(
     name="users", description="顯示玩家清單", guild=discord.Object(id=GUILD_ID)
 )
-async def first_command(interaction: Interaction):
+async def get_all_users(interaction: Interaction):
     users = getUsers()
     await interaction.response.send_message(users)
 
@@ -159,7 +159,7 @@ async def first_command(interaction: Interaction):
 @tree.command(
     name="result", description="顯示計算結果", guild=discord.Object(id=GUILD_ID)
 )
-async def first_command(interaction: Interaction):
+async def get_calculate_result(interaction: Interaction):
     result = getResult()
     # await interaction.response.send_message(result)
     await client.get_channel(CLUE_CHANNEL_ID).send(result)
