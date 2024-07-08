@@ -2,7 +2,6 @@ import discord
 import json
 from discord import app_commands, Message, Interaction
 from datetime import date, timedelta
-import os
 
 from utils import (
     exchange,
@@ -26,8 +25,6 @@ GUILD_ID = config["GUILD_ID"]
 CLUE_CHANNEL_ID = config["CLUE_CHANNEL_ID"]
 CHAT_CHANNEL_ID = config["CHAT_CHANNEL_ID"]
 TEST_CHANNEL_ID = config["TEST_CHANNEL_ID"]
-
-PORT = int(os.environ.get("PORT", 5000))
 
 # client 是我們與 Discord 連結的橋樑，intents 是我們要求的權限
 intents = discord.Intents.default()
