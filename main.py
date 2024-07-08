@@ -26,6 +26,9 @@ CLUE_CHANNEL_ID = config["CLUE_CHANNEL_ID"]
 CHAT_CHANNEL_ID = config["CHAT_CHANNEL_ID"]
 TEST_CHANNEL_ID = config["TEST_CHANNEL_ID"]
 
+BOT_ID = 1087755638886645882
+CHANNEL_HISTORY_LIMIT = 10  # 設定要讀取的歷史訊息數量
+
 # client 是我們與 Discord 連結的橋樑，intents 是我們要求的權限
 intents = discord.Intents.default()
 intents.message_content = True
@@ -62,9 +65,10 @@ async def on_message(message: Message):
         exchange()
         await message.channel.send("計算完成")
     elif message.content == "update":
-        limit = 10
         channel = client.get_channel(CLUE_CHANNEL_ID)
-        messages = [message async for message in channel.history(limit=limit)]
+        messages = [
+            message async for message in channel.history(limit=CHANNEL_HISTORY_LIMIT)
+        ]
 
         for i, message in enumerate(messages):
             message_date = (message.created_at + timedelta(hours=8)).date()
@@ -79,7 +83,7 @@ async def on_message(message: Message):
                             setClues(f"{user}, {clues}")
                     except IndexError as e:
                         print(e)
-                elif author_id != 1087755638886645882:  # BOT ID
+                elif author_id != BOT_ID:
                     user = config["users"][str(author_id)]
                     clues = formatClues(message.content)
                     setClues(f"{user}, {clues}")
