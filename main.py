@@ -20,6 +20,7 @@ def load_config():
     with open("config.json", "r", encoding="utf8") as file:
         return json.load(file)
 
+
 config = load_config()
 print(config["token"])
 print(config["GUILD_ID"])
@@ -68,22 +69,18 @@ async def on_message(message: Message):
     elif message.content == "exchange":
         exchange()
         await message.channel.send("計算完成")
-    
+
     # update clues from history messages (today only)
     elif message.content == "update":
         channel = client.get_channel(CLUE_CHANNEL_ID)
-        messages = [
-            msg async for msg in channel.history(limit=CHANNEL_HISTORY_LIMIT)
-        ]
+        messages = [msg async for msg in channel.history(limit=CHANNEL_HISTORY_LIMIT)]
 
         for msg in messages:
-            message_date = (msg.created_at + timedelta(hours=8)).date() # get msg date in Taiwan
-            if date.today() == message_date:
-                author_id = msg.author.id
-                if author_id == 525463925194489876:  # 更新線索 (小蔡)
-                    handle_multiple_clue_message(message)
-                elif author_id != BOT_ID:
-                    handle_single_clue_message(msg)
+            message_date = (
+                msg.created_at + timedelta(hours=8)
+            ).date()  # get msg date in Taiwan
+            if date.today() == message_date and msg.author.id != BOT_ID:
+                handle_clue_message(msg)
 
         # return updated clues
         detail = getDetail()
@@ -93,15 +90,19 @@ async def on_message(message: Message):
 
     # 更新線索
     elif message.channel.id == CLUE_CHANNEL_ID:
-        author_id = message.author.id
-        if author_id == 525463925194489876:  # 更新線索 (小蔡)
-            handle_multiple_clue_message(message)
-        else:
-            handle_single_clue_message(message)
+        handle_clue_message(message)
 
         # return updated clues
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
+
+
+def handle_clue_message(message: Message):
+    if message.author.id == 525463925194489876:  # 更新線索 (小蔡)
+        handle_multiple_clue_message(message)
+    else:
+        handle_single_clue_message(message)
+
 
 def handle_single_clue_message(message: Message):
     try:
@@ -110,6 +111,7 @@ def handle_single_clue_message(message: Message):
         setClues(f"{user}, {clues}")
     except KeyError:
         print("User not found in config")
+
 
 def handle_multiple_clue_message(message: Message):
     try:
@@ -120,6 +122,7 @@ def handle_multiple_clue_message(message: Message):
             setClues(f"{user}, {clues}")
     except IndexError as e:
         print(e)
+
 
 # @tree.command(
 #     name = "exchange",
