@@ -15,8 +15,12 @@ from utils import (
 )
 
 
+# Load configuration
+def load_config():
 with open("config.json", "r", encoding="utf8") as file:
-    config = json.load(file)
+        return json.load(file)
+
+config = load_config()
 print(config["token"])
 print(config["GUILD_ID"])
 
