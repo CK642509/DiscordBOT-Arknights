@@ -61,13 +61,15 @@ async def on_message(message: Message):
         user = config["users"][str(message.author.id)]
         print(user)
     except:
-        print("not exist in user list")
+        print("User not found in config")
 
     if message.content == "ping":
         await message.channel.send("pong")
     elif message.content == "exchange":
         exchange()
         await message.channel.send("計算完成")
+    
+    # update clues from history messages (today only)
     elif message.content == "update":
         channel = client.get_channel(CLUE_CHANNEL_ID)
         messages = [
@@ -75,22 +77,13 @@ async def on_message(message: Message):
         ]
 
         for msg in messages:
-            message_date = (msg.created_at + timedelta(hours=8)).date()
+            message_date = (msg.created_at + timedelta(hours=8)).date() # get msg date in Taiwan
             if date.today() == message_date:
                 author_id = msg.author.id
                 if author_id == 525463925194489876:  # 更新線索 (小蔡)
-                    try:
-                        for j in range(2):
-                            clue = msg.content.split("\n")[j]
-                            user, clues = clue.split(":")
-                            clues = formatClues(clues)
-                            setClues(f"{user}, {clues}")
-                    except IndexError as e:
-                        print(e)
+                    handle_multiple_clue_message(message)
                 elif author_id != BOT_ID:
-                    user = config["users"][str(author_id)]
-                    clues = formatClues(msg.content)
-                    setClues(f"{user}, {clues}")
+                    handle_single_clue_message(msg)
 
         # return updated clues
         detail = getDetail()
@@ -102,22 +95,31 @@ async def on_message(message: Message):
     elif message.channel.id == CLUE_CHANNEL_ID:
         author_id = message.author.id
         if author_id == 525463925194489876:  # 更新線索 (小蔡)
-            try:
-                for i in range(2):
-                    clue = message.content.split("\n")[i]
-                    user, clue_content = clue.split(":")
-                    clues = formatClues(clue_content)
-                    setClues(f"{user}, {clues}")
-            except IndexError as e:
-                print(e)
+            handle_multiple_clue_message(message)
         else:
-            user = config["users"][str(author_id)]
-            clues = formatClues(message.content)
-            setClues(f"{user}, {clues}")
+            handle_single_clue_message(message)
 
+        # return updated clues
         detail = getDetail()
         await client.get_channel(TEST_CHANNEL_ID).send(f"```{detail}```")
 
+def handle_single_clue_message(message: Message):
+    try:
+        user = config["users"][str(message.author.id)]
+        clues = formatClues(message.content)
+        setClues(f"{user}, {clues}")
+    except KeyError:
+        print("User not found in config")
+
+def handle_multiple_clue_message(message: Message):
+    try:
+        for i in range(2):
+            clue = message.content.split("\n")[i]
+            user, clue_content = clue.split(":")
+            clues = formatClues(clue_content)
+            setClues(f"{user}, {clues}")
+    except IndexError as e:
+        print(e)
 
 # @tree.command(
 #     name = "exchange",
