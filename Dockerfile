@@ -1,6 +1,6 @@
 FROM python:3.10.13-slim-bullseye
 
-RUN apt-get update && apt-get install lzip git make gcc g++ -y && apt clean && rm -rf /var/lib/apt/lists/*
+# RUN apt-get update && apt-get install lzip git make gcc g++ -y && apt clean && rm -rf /var/lib/apt/lists/*
 
 # setting working directory
 WORKDIR /app
