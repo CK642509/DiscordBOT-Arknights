@@ -17,13 +17,13 @@ def getResult():
 
 
 def getUsers():
-    with open("_User data.txt", "r") as f:
+    with open("_User data.txt", "r", errors="replace") as f:
         text = f.read()
         return "\n".join(text.split("\n")[2:])
 
 
 def getClues():
-    with open("input.txt", "r") as f:
+    with open("Input.txt", "r") as f:
         return f.read()
 
 
@@ -52,7 +52,7 @@ def setClues(clues: str):
     clue_list[idx] = new_clue
     new_clues = "\n".join(clue_list)
 
-    with open("input.txt", "w") as f:
+    with open("Input.txt", "w") as f:
         f.write(new_clues)
 
     # record details
