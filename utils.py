@@ -12,7 +12,7 @@ def exchange():
 
 
 def getResult():
-    with open("Results.txt", "r") as f:
+    with open("Results.txt", "r", errors="replace") as f:
         return f.read()
 
 
