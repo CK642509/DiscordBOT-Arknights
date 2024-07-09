@@ -6,3 +6,4 @@ Input.txt
 _Error Log.txt
 .env
 utils/*
+.venv
