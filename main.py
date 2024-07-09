@@ -71,6 +71,7 @@ async def on_message(message: Message):
         await message.channel.send("計算完成")
 
     # update clues from history messages (today only)
+    # TODO: 重複留言的話，以最後一則為主
     elif message.content == "update":
         channel = client.get_channel(CLUE_CHANNEL_ID)
         messages = [msg async for msg in channel.history(limit=CHANNEL_HISTORY_LIMIT)]
