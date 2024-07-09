@@ -12,12 +12,12 @@ def exchange():
 
 
 def getResult():
-    with open("Results.txt", "r", errors="replace") as f:
+    with open("Results.txt", "r", errors="replace", encoding="cp950") as f:
         return f.read()
 
 
 def getUsers():
-    with open("_User data.txt", "r", errors="replace") as f:
+    with open("_User data.txt", "r", errors="replace", encoding="cp950") as f:
         text = f.read()
         return "\n".join(text.split("\n")[2:])
 
